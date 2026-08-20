@@ -11,7 +11,7 @@ st.set_page_config(page_title="DA Shift Feedback", page_icon="🎙️", layout="
 DATA_FILE = "da_feedback_data.csv"
 
 if not os.path.exists(DATA_FILE):
-    df_empty = pd.DataFrame(columns=["Date", "DA ID", "Language", "Sentiment", "Translation", "Takeaways", "Facts"])
+    df_empty = pd.DataFrame(columns=["Date", "DA ID", "Phone Number", "Language", "Sentiment", "Translation", "Takeaways", "Facts"])
     df_empty.to_csv(DATA_FILE, index=False)
 
 # ==========================================
@@ -73,21 +73,35 @@ ALL_LANGUAGES = [
     "मराठी (Marathi)", "தமிழ் (Tamil)", "ಕನ್ನಡ (Kannada)"
 ]
 
-# Fully restored translation dictionary including the audio clip text
+# ==========================================
+# ⚠️ PLACEHOLDER: UPDATE YOUR DA IDs HERE ⚠️
+# ==========================================
+# Add all your actual DA numbers inside the brackets below.
+# Keep the first option as "-- Select DA ID --" so they are forced to choose.
+# Make sure each ID is inside quotes with a comma after it!
+DA_LIST = [
+    "-- Select DA ID --",
+    "1045",
+    "PLACEHOLDER_ID_1",
+    "PLACEHOLDER_ID_2",
+    "PLACEHOLDER_ID_3",
+    "PLACEHOLDER_ID_4"
+]
+# ==========================================
+
 UI_TEXT = {
-    "English": {"title": "🎙️ End-of-Shift Voice Feedback", "select_lang": "Step 1: Language", "enter_id": "Step 2: Enter DA ID", "record": "Step 3: Record", "record_clip": "Record your clip", "submit": "🚀 Submit Feedback", "success": "✅ Submitted!", "err_id": "⚠️ Enter ID", "err_aud": "⚠️ Record Audio"},
-    "हिन्दी (Hindi)": {"title": "🎙️ शिफ्ट समाप्ति फीडबैक", "select_lang": "भाषा", "enter_id": "DA ID दर्ज करें", "record": "रिकॉर्ड करें", "record_clip": "अपना क्लिप रिकॉर्ड करें", "submit": "🚀 सबमिट करें", "success": "✅ धन्यवाद!", "err_id": "⚠️ ID दर्ज करें", "err_aud": "⚠️ ऑडियो रिकॉर्ड करें"},
-    "বাংলা (Bengali)": {"title": "🎙️ শিফট শেষের প্রতিক্রিয়া", "select_lang": "ভাষা", "enter_id": "DA ID লিখুন", "record": "রেকর্ড করুন", "record_clip": "আপনার অডিও রেকর্ড করুন", "submit": "🚀 জমা দিন", "success": "✅ সফল হয়েছে!", "err_id": "⚠️ ID লিখুন", "err_aud": "⚠️ অডিও রেকর্ড করুন"},
-    "తెలుగు (Telugu)": {"title": "🎙️ షిఫ్ట్ ముగింపు ఫీడ్‌బ్యాక్", "select_lang": "భాష", "enter_id": "DA ID నమోదు చేయండి", "record": "రికార్డ్ చేయండి", "record_clip": "మీ వాయిస్ రికార్డ్ చేయండి", "submit": "🚀 సమర్పించండి", "success": "✅ విజయవంతమైంది!", "err_id": "⚠️ ID నమోదు చేయండి", "err_aud": "⚠️ ఆడియో రికార్డ్ చేయండి"},
-    "मराठी (Marathi)": {"title": "🎙️ शिफ्ट समाप्ती फीडबॅक", "select_lang": "भाषा", "enter_id": "DA ID एंटर करा", "record": "रेकॉर्ड करा", "record_clip": "तुमचा ऑडिओ रेकॉर्ड करा", "submit": "🚀 सबमिट करा", "success": "✅ सबमिट केले!", "err_id": "⚠️ ID एंटर करा", "err_aud": "⚠️ ऑडिओ रेकॉर्ड करा"},
-    "தமிழ் (Tamil)": {"title": "🎙️ பணி முடிவு கருத்து", "select_lang": "மொழி", "enter_id": "DA ID ஐ உள்ளிடவும்", "record": "பதிவு செய்யவும்", "record_clip": "உங்கள் ஆடியோவை பதிவு செய்யவும்", "submit": "🚀 சமர்ப்பிக்கவும்", "success": "✅ சமர்ப்பிக்கப்பட்டது!", "err_id": "⚠️ ID ஐ உள்ளிடவும்", "err_aud": "⚠️ ஆடியோவைப் பதிவு செய்யவும்"},
-    "ಕನ್ನಡ (Kannada)": {"title": "🎙️ ಶಿಫ್ಟ್ ಮುಕ್ತಾಯದ ಪ್ರತಿಕ್ರಿಯೆ", "select_lang": "ಭಾಷೆ", "enter_id": "DA ID ನಮೂದಿಸಿ", "record": "ರೆಕಾರ್ಡ್ ಮಾಡಿ", "record_clip": "ನಿಮ್ಮ ಆಡಿಯೋ ರೆಕಾರ್ಡ್ ಮಾಡಿ", "submit": "🚀 ಸಲ್ಲಿಸಿ", "success": "✅ ಸಲ್ಲಿಸಲಾಗಿದೆ!", "err_id": "⚠️ ID ನಮೂದಿಸಿ", "err_aud": "⚠️ ಆಡಿಯೋ ರೆಕಾರ್ಡ್ ಮಾಡಿ"}
+    "English": {"title": "🎙️ End-of-Shift Voice Feedback", "select_lang": "Step 1: Language", "enter_id": "Step 2: Select DA ID", "enter_num": "Step 3: Phone Number", "record": "Step 4: Record", "record_clip": "Record your clip", "submit": "🚀 Submit Feedback", "success": "✅ Submitted!", "err_id": "⚠️ Select ID", "err_num": "⚠️ Enter Phone Number", "err_aud": "⚠️ Record Audio"},
+    "हिन्दी (Hindi)": {"title": "🎙️ शिफ्ट समाप्ति फीडबैक", "select_lang": "भाषा", "enter_id": "DA ID चुनें", "enter_num": "फ़ोन नंबर दर्ज करें", "record": "रिकॉर्ड करें", "record_clip": "अपना क्लिप रिकॉर्ड करें", "submit": "🚀 सबमिट करें", "success": "✅ धन्यवाद!", "err_id": "⚠️ ID चुनें", "err_num": "⚠️ फ़ोन नंबर दर्ज करें", "err_aud": "⚠️ ऑडियो रिकॉर्ड करें"},
+    "বাংলা (Bengali)": {"title": "🎙️ শিফট শেষের প্রতিক্রিয়া", "select_lang": "भाषा", "enter_id": "DA ID নির্বাচন করুন", "enter_num": "ফোন নম্বর লিখুন", "record": "রেকর্ড করুন", "record_clip": "আপনার অডিও রেকর্ড করুন", "submit": "🚀 জমা দিন", "success": "✅ সফল হয়েছে!", "err_id": "⚠️ ID নির্বাচন করুন", "err_num": "⚠️ ফোন নম্বর লিখুন", "err_aud": "⚠️ অডিও রেকর্ড করুন"},
+    "తెలుగు (Telugu)": {"title": "🎙️ షిఫ్ట్ ముగింపు ఫీడ్‌బ్యాక్", "select_lang": "భాష", "enter_id": "DA ID ఎంచుకోండి", "enter_num": "ఫోన్ నంబర్ నమోదు చేయండి", "record": "రికార్డ్ చేయండి", "record_clip": "మీ వాయిస్ రికార్డ్ చేయండి", "submit": "🚀 సమర్పించండి", "success": "✅ విజయవంతమైంది!", "err_id": "⚠️ ID ఎంచుకోండి", "err_num": "⚠️ ఫోన్ నంబర్ నమోదు చేయండి", "err_aud": "⚠️ ఆడియో రికార్డ్ చేయండి"},
+    "मराठी (Marathi)": {"title": "🎙️ शिफ्ट समाप्ती फीडबॅक", "select_lang": "भाषा", "enter_id": "DA ID निवडा", "enter_num": "फोन नंबर एंटर करा", "record": "रेकॉर्ड करा", "record_clip": "तुमचा ऑडिओ रेकॉर्ड करा", "submit": "🚀 सबमिट करा", "success": "✅ सबमिट केले!", "err_id": "⚠️ ID निवडा", "err_num": "⚠️ फोन नंबर एंटर करा", "err_aud": "⚠️ ऑडिओ रेकॉर्ड करा"},
+    "தமிழ் (Tamil)": {"title": "🎙️ பணி முடிவு கருத்து", "select_lang": "மொழி", "enter_id": "DA ID ஐ தேர்ந்தெடுக்கவும்", "enter_num": "தொலைபேசி எண்ணை உள்ளிடவும்", "record": "பதிவு செய்யவும்", "record_clip": "உங்கள் ஆடியோவை பதிவு செய்யவும்", "submit": "🚀 சமர்ப்பிக்கவும்", "success": "✅ சமர்ப்பிக்கப்பட்டது!", "err_id": "⚠️ ID ஐ தேர்ந்தெடுக்கவும்", "err_num": "⚠️ தொலைபேசி எண்ணை உள்ளிடவும்", "err_aud": "⚠️ ஆடியோவைப் பதிவு செய்யவும்"},
+    "ಕನ್ನಡ (Kannada)": {"title": "🎙️ ಶಿಫ್ಟ್ ಮುಕ್ತಾಯದ ಪ್ರತಿಕ್ರಿಯೆ", "select_lang": "ಭಾಷೆ", "enter_id": "DA ID ಆಯ್ಕೆಮಾಡಿ", "enter_num": "ಫೋನ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ", "record": "ರೆಕಾರ್ಡ್ ಮಾಡಿ", "record_clip": "ನಿಮ್ಮ ಆಡಿಯೋ ರೆಕಾರ್ಡ್ ಮಾಡಿ", "submit": "🚀 ಸಲ್ಲಿಸಿ", "success": "✅ ಸಲ್ಲಿಸಲಾಗಿದೆ!", "err_id": "⚠️ ID ಆಯ್ಕೆಮಾಡಿ", "err_num": "⚠️ ಫೋನ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ", "err_aud": "⚠️ ಆಡಿಯೋ ರೆಕಾರ್ಡ್ ಮಾಡಿ"}
 }
 
 if "submitted" not in st.session_state:
     st.session_state.submitted = False
 
-# The dropdown label now includes multiple language scripts
 selected_lang = st.selectbox("🌐 Language / भाषा / ভাষা / భాష / மொழி / ಭಾಷೆ", options=ALL_LANGUAGES)
 t = UI_TEXT.get(selected_lang, UI_TEXT["English"])
 
@@ -100,15 +114,20 @@ if st.session_state.submitted:
         st.rerun()
     st.stop()
 
-da_id_val = st.text_input(t["enter_id"], placeholder="e.g. 1045")
-st.subheader(t["record"])
+# Dropdown for ID using the placeholder list
+da_id_val = st.selectbox(t["enter_id"], options=DA_LIST)
 
-# The audio widget now pulls the translated text
+# Text input for Phone Number
+phone_val = st.text_input(t["enter_num"], placeholder="e.g. 9876543210")
+
+st.subheader(t["record"])
 audio = st.audio_input(t["record_clip"])
 
 if st.button(t["submit"], type="primary", use_container_width=True):
-    if not da_id_val.strip():
+    if da_id_val == DA_LIST[0]:
         st.error(t["err_id"])
+    elif not phone_val.strip():
+        st.error(t["err_num"])
     elif not audio:
         st.error(t["err_aud"])
     else:
@@ -134,6 +153,7 @@ if st.button(t["submit"], type="primary", use_container_width=True):
                 new_row = pd.DataFrame([{
                     "Date": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "DA ID": da_id_val,
+                    "Phone Number": phone_val,
                     "Language": selected_lang,
                     "Sentiment": data.get("sentiment", ""),
                     "Translation": data.get("translation", ""),
