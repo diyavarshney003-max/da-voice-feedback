@@ -20,10 +20,9 @@ if not os.path.exists(DATA_FILE):
 if st.query_params.get("admin") == "true":
     st.title("🔒 Manager Dashboard")
     
-    # 1st Layer of Security: The Password Lock
     admin_pass = st.text_input("Enter Manager Password", type="password")
     
-    if admin_pass == "Manager@123":  # You can change this password in the code!
+    if admin_pass == "Manager@123":
         try:
             df = pd.read_csv(DATA_FILE)
             
@@ -31,14 +30,12 @@ if st.query_params.get("admin") == "true":
                 st.info("No feedback data available yet.")
                 st.stop()
                 
-            # Convert Date column for filtering
             df['Date'] = pd.to_datetime(df['Date'])
             
             st.subheader("📅 Filter Data by Date")
             min_date = df['Date'].dt.date.min()
             max_date = df['Date'].dt.date.max()
             
-            # The Date Picker
             date_range = st.date_input("Select Time Period", value=(min_date, max_date), min_value=min_date, max_value=max_date)
             
             if len(date_range) == 2:
@@ -65,7 +62,7 @@ if st.query_params.get("admin") == "true":
     elif admin_pass:
         st.error("❌ Incorrect Password")
         
-    st.stop() # Stops the DA app from loading for the Admin
+    st.stop()
 
 
 # ==========================================
@@ -76,9 +73,15 @@ ALL_LANGUAGES = [
     "मराठी (Marathi)", "தமிழ் (Tamil)", "ಕನ್ನಡ (Kannada)"
 ]
 
+# Fully restored translation dictionary
 UI_TEXT = {
     "English": {"title": "🎙️ End-of-Shift Voice Feedback", "select_lang": "Step 1: Language", "enter_id": "Step 2: Enter DA ID", "record": "Step 3: Record", "submit": "🚀 Submit Feedback", "success": "✅ Submitted!", "err_id": "⚠️ Enter ID", "err_aud": "⚠️ Record Audio"},
-    "हिन्दी (Hindi)": {"title": "🎙️ शिफ्ट समाप्ति फीडबैक", "select_lang": "भाषा", "enter_id": "DA ID दर्ज करें", "record": "रिकॉर्ड करें", "submit": "🚀 सबमिट करें", "success": "✅ धन्यवाद!", "err_id": "⚠️ ID दर्ज करें", "err_aud": "⚠️ ऑडियो रिकॉर्ड करें"}
+    "हिन्दी (Hindi)": {"title": "🎙️ शिफ्ट समाप्ति फीडबैक", "select_lang": "भाषा", "enter_id": "DA ID दर्ज करें", "record": "रिकॉर्ड करें", "submit": "🚀 सबमिट करें", "success": "✅ धन्यवाद!", "err_id": "⚠️ ID दर्ज करें", "err_aud": "⚠️ ऑडियो रिकॉर्ड करें"},
+    "বাংলা (Bengali)": {"title": "🎙️ শিফট শেষের প্রতিক্রিয়া", "select_lang": "ভাষা", "enter_id": "DA ID লিখুন", "record": "রেকর্ড করুন", "submit": "🚀 জমা দিন", "success": "✅ সফল হয়েছে!", "err_id": "⚠️ ID লিখুন", "err_aud": "⚠️ অডিও রেকর্ড করুন"},
+    "తెలుగు (Telugu)": {"title": "🎙️ షిఫ్ట్ ముగింపు ఫీడ్‌బ్యాక్", "select_lang": "భాష", "enter_id": "DA ID నమోదు చేయండి", "record": "రికార్డ్ చేయండి", "submit": "🚀 సమర్పించండి", "success": "✅ విజయవంతమైంది!", "err_id": "⚠️ ID నమోదు చేయండి", "err_aud": "⚠️ ఆడియో రికార్డ్ చేయండి"},
+    "मराठी (Marathi)": {"title": "🎙️ शिफ्ट समाप्ती फीडबॅक", "select_lang": "भाषा", "enter_id": "DA ID एंटर करा", "record": "रेकॉर्ड करा", "submit": "🚀 सबमिट करा", "success": "✅ सबमिट केले!", "err_id": "⚠️ ID एंटर करा", "err_aud": "⚠️ ऑडिओ रेकॉर्ड करा"},
+    "தமிழ் (Tamil)": {"title": "🎙️ பணி முடிவு கருத்து", "select_lang": "மொழி", "enter_id": "DA ID ஐ உள்ளிடவும்", "record": "பதிவு செய்யவும்", "submit": "🚀 சமர்ப்பிக்கவும்", "success": "✅ சமர்ப்பிக்கப்பட்டது!", "err_id": "⚠️ ID ஐ உள்ளிடவும்", "err_aud": "⚠️ ஆடியோவைப் பதிவு செய்யவும்"},
+    "ಕನ್ನಡ (Kannada)": {"title": "🎙️ ಶಿಫ್ಟ್ ಮುಕ್ತಾಯದ ಪ್ರತಿಕ್ರಿಯೆ", "select_lang": "ಭಾಷೆ", "enter_id": "DA ID ನಮೂದಿಸಿ", "record": "ರೆಕಾರ್ಡ್ ಮಾಡಿ", "submit": "🚀 ಸಲ್ಲಿಸಿ", "success": "✅ ಸಲ್ಲಿಸಲಾಗಿದೆ!", "err_id": "⚠️ ID ನಮೂದಿಸಿ", "err_aud": "⚠️ ಆಡಿಯೋ ರೆಕಾರ್ಡ್ ಮಾಡಿ"}
 }
 
 if "submitted" not in st.session_state:
@@ -125,7 +128,6 @@ if st.button(t["submit"], type="primary", use_container_width=True):
                 raw_text = response.text.strip().removeprefix("```json").removesuffix("```").strip()
                 data = json.loads(raw_text)
                 
-                # SAVE LOCALLY TO CSV
                 new_row = pd.DataFrame([{
                     "Date": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "DA ID": da_id_val,
