@@ -142,8 +142,11 @@ if st.button(t["submit"], type="primary", use_container_width=True):
                 
                 prompt = f"""
                 Analyze this feedback in {selected_lang}. 
-                Translate to English, extract 3 facts, determine sentiment.
-                Output JSON strictly: {{"translation": "...", "facts": ["..."], "sentiment": "...", "summary": ["..."]}}
+                1. Translate to clear English.
+                2. Extract ALL distinct operational issues or facts (do not limit the number; capture every issue mentioned like app bugs, route delays, etc.).
+                3. Determine overall sentiment.
+                4. Provide a brief summary.
+                Output JSON strictly: {{"translation": "...", "facts": ["...", "..."], "sentiment": "...", "summary": ["...", "..."]}}
                 """
                 response = client.models.generate_content(model='gemini-3.6-flash', contents=[prompt, uploaded_audio])
                 
